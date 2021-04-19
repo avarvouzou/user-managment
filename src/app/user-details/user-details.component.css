@@ -1,0 +1,28 @@
+.user-title {
+  font-size: x-large;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.arrow {
+  font-size: x-large;
+  margin-left: -20px;
+}
+
+.delete {
+  background-color: brown;
+  color: white;
+  border: brown;
+}
+
+.edit {
+  background-color: green;
+  color: white;
+  border: green;
+}
+
+.save {
+  background-color: blue;
+  color: white;
+  border: blue;
+}

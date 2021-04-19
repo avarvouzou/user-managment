@@ -1,0 +1,92 @@
+
+<div class="container-fluid" style="padding-top: 50px; height: 900px;">
+  <div>
+    <span class="arrow" routerLink="/" >❮</span>
+    <span class="user-title">{{user?.name}}</span>
+  </div>
+  <div class="row" style="border: 1px solid#dee2e6;">
+    <div class="col-sm">
+      <img *ngIf="mode !== 'edit'" [src]="user?.avatar" class="mr-2" style="width: 100px">
+      <form [formGroup]="userForm">
+        <ng-container *ngIf="mode === 'edit'">
+          <label>Avatar</label><br>
+          <input type="file" (change)="onUserAvatarChange($event)"/>
+        </ng-container>
+
+        <label>Name</label><br>
+        <input formControlName="name"/><br>
+
+        <label>Country</label><br>
+        <input formControlName="country"/><br>
+
+        <ng-container *ngIf="mode !== 'edit'">
+          <label>Age</label><br>
+          <input formControlName="age"/><br>
+        </ng-container>
+
+        <ng-container *ngIf="mode === 'edit'">
+          <label>Birthday</label><br>
+          <input type="date" formControlName="birthday"/>
+        </ng-container>
+
+      </form>
+    </div>
+
+    <div class="col-sm">
+      <form [formGroup]="appTable">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th scope="col">App Icon</th>
+            <th scope="col">App Name</th>
+            <th scope="col">Action</th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td><button [disabled]="mode !== 'edit'" (click)="createNewAppRow()">+</button></td>
+            </tr>
+
+            <ng-container formArrayName="userApps" *ngFor="let group of getFormControls().controls; let i=index">
+              <tr *ngIf="group.get('isEditable').value" [formGroupName]="i">
+                <td>
+                  <input type="file" (change)="onAppAvatarChange($event, group)"/>
+                </td>
+                <td><input [value]="group.get('name').value" formControlName="name"/></td>
+
+                <td>
+                  <button [disabled]="mode !== 'edit'" class="delete" (click)="deleteApp(group)">Delete</button>
+                  <button *ngIf="group.get('isNew').value !== true" [disabled]="mode !== 'edit'" class="save" (click)="updateApp(group)">Update</button>
+                  <button *ngIf="group.get('isNew').value === true" [disabled]="mode !== 'edit'" class="save" (click)="createNewApp(group)">Done</button>
+                </td>
+              </tr>
+
+              <tr *ngIf="!group.get('isEditable').value">
+                <td>
+                  <img [src]="'http://lab.wappier.com/' + group.get('existingIcon').value" class="mr-2" style="width: 20px">
+                </td>
+                <td>
+                  {{group.get('name').value}}
+                </td>
+                <td>
+                  <button [disabled]="mode !== 'edit'" class="edit" (click)="editAppRow(group)">Edit</button>
+                  <button [disabled]="mode !== 'edit'" class="delete" (click)="deleteApp(group, i)">Delete</button>
+                </td>
+              </tr>
+            </ng-container>
+
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+  <div class="row" style="float: right;">
+    <button *ngIf="userId != null" style="width: 200px;" class="delete" (click)="deleteUser()">Remove User</button>
+    <button style="width: 200px;" *ngIf="mode !== 'edit'" class="edit" (click)="editUser()">Edit User</button>
+    <button style="width: 200px;" *ngIf="mode === 'edit' && userId != null" class="save" (click)="updateUser()">Save User</button>
+    <button style="width: 200px;" *ngIf="mode === 'edit' && userId == null" (click)="createUser()">Create User</button>
+  </div>
+</div>
+

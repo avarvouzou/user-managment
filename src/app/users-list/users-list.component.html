@@ -1,0 +1,26 @@
+<div style="overflow-x: auto; height: 900px;">
+  <table class="table table-striped" >
+    <thead>
+    <tr>
+      <th scope="col">Avatar</th>
+      <th scope="col" sortable="name" (sort)="onSort($event)">Name</th>
+      <th scope="col" sortable="age" (sort)="onSort($event)">Age</th>
+      <th scope="col" sortable="country" (sort)="onSort($event)">Country</th>
+      <th scope="col" sortable="appsCount" (sort)="onSort($event)">Number of apps</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr (click)="rowClicked(user)" *ngFor="let user of users">
+      <td>
+        <img [src]="user.avatar" class="mr-2" style="width: 20px">
+      </td>
+      <td>{{ user.name }}</td>
+      <td>{{ user.age }}</td>
+      <td>{{ user.country }}</td>
+      <td>{{ user.appsCount }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+<button style="float: right; width: 200px;" routerLink="/users/new">Add User</button>
